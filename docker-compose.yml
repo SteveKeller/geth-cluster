@@ -1,0 +1,65 @@
+version: "3"
+services:
+  geth-boot:
+    build: geth-boot
+    command: ' --nodekey "/privatechain/bootnode.key" --verbosity=3'
+    networks:
+      overlay:
+        ipv4_address: 172.16.0.2 
+    hostname: geth-boot
+    environment:
+      - TZ=Europe/Zurich
+    restart: always
+
+  geth-exposed:
+    build: geth-miner
+    command: '--datadir "./privatechain" --verbosity=3 --ethash.dagdir="/privatechain/.ethash" --rpc --rpcaddr="0.0.0.0" --rpcport=8545 --rpcapi "eth,web3,personal,net,debug,admin" --rpccorsdomain="*" --mine --minerthreads=1 --networkid=65534 --bootnodes="enode://5076491b883428eeafb09b1fa431c80621b938cb7b0653c3d8c8438007f36e2379a83a3bebae25ca1fb89f0e58e96282cb2ae04dc6124308108a7b2ca181b396@172.16.0.2:30301"'
+    networks:
+      overlay:
+        ipv4_address: 172.16.0.3
+    ports:
+      - "8545:8545"
+      - "30303:30303"
+    hostname: geth-exposed
+    environment:
+      - TZ=Europe/Zurich
+    depends_on:
+      - geth-boot
+    restart: always
+    
+  geth-miner:
+    build: geth-miner
+    command: '--datadir "./privatechain" --verbosity=3 --ethash.dagdir="/privatechain/.ethash" --rpc --rpcaddr="0.0.0.0" --rpcport=8545 --rpcapi "eth,web3,personal,net,debug,admin" --rpccorsdomain="*" --mine --minerthreads=1 --networkid=65534 --bootnodes="enode://5076491b883428eeafb09b1fa431c80621b938cb7b0653c3d8c8438007f36e2379a83a3bebae25ca1fb89f0e58e96282cb2ae04dc6124308108a7b2ca181b396@172.16.0.2:30301"'
+    networks:
+      overlay:
+    environment:
+      - TZ=Europe/Zurich
+    depends_on:
+      - geth-boot
+      - ethexplorer
+      - geth-exposed  
+    restart: always
+
+  ethexplorer:     
+    build: ethexplorer
+    ports:
+      - "8000:8000"
+    networks:
+      overlay:
+        ipv4_address: 172.16.0.4
+    hostname: ethexplorer
+    env_file:
+      - envar.env
+    environment:
+      - TZ=Europe/Zurich
+    depends_on:
+      - geth-boot
+    restart: always
+
+networks:
+  overlay:
+    driver: bridge
+    ipam:       
+      driver: default
+      config:       
+        - subnet:  172.16.0.0/24
