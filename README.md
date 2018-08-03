@@ -1,14 +1,26 @@
-# User Manual - Private Ethereum Blockchain                                                              
-                                                                              
+# Private Ethereum Blockchain - Geth Cluster                                                              
+
+This project provide a private ethereum blockchain based on a geth cluster with additional features.
+
+> F1: automatically P2P discovery with a bootnode for all ethereum miners <br>
+> F2: miners are scalable while runtime <br>
+> F3: exposed node for interacting (additional miners, smart contract, web3, ...) from outside with the blockchain <br>
+> F4: smart contract deployment with truffle <br>
+> F5: integrated blockchain explorer <br>
+> F6: some tests :) <br>
+
+ever wanted to have your own ethereum blockchain and just play with it? <br>
+...then this is the right project for you ;)
+
 ### Requirements
 ##### Software                                                              
-* Docker 18.03.0-ce <=                                                           
-* Docker Compose 1.21.0 <=                                                       
+* docker 18.03.0-ce <=                                                           
+* docker-compose 1.21.0 <=                                                       
        
 ##### Ressource Recommendations
 `CPU depends heavy on running miner count, default miner count is 2, each miner mines with 1 cpu thread`
 
-Disk Space (Docker Dir) >= 20GB   
+Disk Space (docker dir) >= 10GB   
 CPU >= 4  
 Memory >= 2GB 
                                                                       
@@ -16,7 +28,7 @@ Memory >= 2GB
 * clone geth-cluster repo
 * edit envar.env file and set environment variables for your setup
                                                                               
-### Basic Usage                                                                     
+### Getting Started                                                                     
 ```sh
 docker-compose up                                                             
 ```
@@ -34,10 +46,12 @@ docker-compose up -d --scale geth-miner=${MinerCount} --no-recreate
 Every miner (including exposed miner) has an already existing ethereum account. The account address is located in the file **/privatechain/accID** inside each miner container.
 The account will be generated when the miner containers are first started. The password is predefined in the file **geth-miner/passfile** in the EtheRed git repository.
 
-### Plattform Tests
+### Testing
 
-EtheRed Plattform needs some time to bootstrap and get the ethereum network ready. 
-Tests can fail if they are executed to fast after the EtheRed Plattform is started.
+> Tested with: Debian Strech (9.4) | docker 18.03.0-ce | docker-compose 1.21.0  
+
+The geth cluster needs some time to bootstrap and get the ethereum network ready. 
+Tests can fail if they are executed to fast after the docker-compose is started.
 
 ##### Build test container
 ```sh
