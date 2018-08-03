@@ -4,7 +4,7 @@ This project provide a private ethereum blockchain based on a geth cluster with 
 
 > F1: automatically P2P discovery with a bootnode for all ethereum miners <br>
 > F2: miners are scalable while runtime <br>
-> F3: exposed node for interacting (additional miners, smart contract, web3, ...) from outside with the blockchain <br>
+> F3: exposed node for interacting (additional miners, remix, web3, node-red, ...) from outside with the blockchain <br>
 > F4: smart contract deployment with truffle <br>
 > F5: integrated blockchain explorer <br>
 > F6: some tests :) <br>
@@ -44,11 +44,11 @@ docker-compose up -d --scale geth-miner=${MinerCount} --no-recreate
 
 ### Ethereum Accounts  
 Every miner (including exposed miner) has an already existing ethereum account. The account address is located in the file **/privatechain/accID** inside each miner container.
-The account will be generated when the miner containers are first started. The password is predefined in the file **geth-miner/passfile** in the EtheRed git repository.
+The account will be generated when the miner containers are first started. The password is predefined in the file **geth-miner/passfile** in the geth-cluster git repository.
 
 ### Testing
 
-> Tested with: Debian Strech (9.4) | docker 18.03.0-ce | docker-compose 1.21.0  
+> Tested with: Debian Stretch (9.4) | docker 18.03.0-ce | docker-compose 1.21.0  
 
 The geth cluster needs some time to bootstrap and get the ethereum network ready. 
 Tests can fail if they are executed to fast after the docker-compose is started.
