@@ -13,16 +13,17 @@ CPU >= 4
 Memory >= 2GB 
                                                                       
 ##### Prerequisites                                                             
-edit envar.env file and set environment variables for your setup
+* clone geth-cluster repo
+* edit envar.env file and set environment variables for your setup
                                                                               
 ### Basic Usage                                                                     
 ```sh
 docker-compose up                                                             
 ```
 
-Ethereum Blockchain needs about 30 minutes for bootstrapping, which means to build and run all containers. Building Container is only required if they are not already build once.
+Ethereum Blockchain needs about 30 minutes for bootstrapping (depends on your cpu hardware), which means to build and run all containers. Building container is only required if they are not already build once.
 The ethereum network builds a DAG (directed acyclic graph) for the proof of work algorithm. The building process takes all available cpu cores from the docker host machine.
-After the DAG is built the ethereum miner node are starting with the mining. The DAG only needs once to get created and as long the geth container are not destroyed.
+After the DAG was built miner nodes are starting mine. The DAG only needs once to get created and as long as the geth containers are not destroyed.
 
 ### Scale Miners     
 ```sh
@@ -40,12 +41,12 @@ Tests can fail if they are executed to fast after the EtheRed Plattform is start
 
 ##### Build test container
 ```sh
-docker build -t ethered-tests testing
+docker build -t testing-1 testing
 ```
 
 ##### Run test container and attach to existing compose network
 ```sh
-docker run -it --network=bda-code_overlay --env-file envar.env ethered-tests
+docker run -it --network=geth-cluster_overlay --env-file envar.env testing-1
 ```
 
 ### Deployment Smart Contract   
@@ -56,5 +57,5 @@ docker build -t truffle-1 truffle
 
 ##### Run truffle container and attach to existing compose network
 ```sh
-docker run -it -w /dapp/${WorkDirSmartContract} --network=bda-code_overlay truffle-1 migrate --network geth-chain
+docker run -it -w /dapp/${WorkDirSmartContract} --network=geth-cluster_overlay truffle-1 migrate --network geth-chain
 ```
