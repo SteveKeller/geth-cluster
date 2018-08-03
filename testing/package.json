@@ -1,0 +1,19 @@
+{
+  "name": "geth-cluster-testing",
+  "version": "1.0.0",
+  "dependencies": {
+    "jasmine": "3.1.0",
+    "web3": "0.20.6",
+    "mqtt": "2.17.0",
+    "is-port-reachable": "2.0.0",
+    "request": "2.85.0"
+  },
+  "description": "jasmine smoke tests for geth cluster",
+  "main": "",
+  "scripts": {
+    "test": "jasmine tests.js --random=false"
+  },
+  "keywords": [],
+  "author": "steve keller",
+  "license": "ISC"
+}
