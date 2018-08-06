@@ -9,8 +9,8 @@ This project provide a private ethereum blockchain based on a geth cluster with 
 > F5: integrated blockchain explorer <br>
 > F6: some tests :) <br>
 
-ever wanted to have your own ethereum blockchain and just play with it? <br>
-...then this is the right project for you ;)
+ever wanted to have your own ethereum blockchain and just play a little? <br>
+...then it's a match ;)
 
 ### Requirements
 ##### Software                                                              
@@ -20,9 +20,9 @@ ever wanted to have your own ethereum blockchain and just play with it? <br>
 ##### Ressource Recommendations
 `CPU depends heavy on running miner count, default miner count is 2, each miner mines with 1 cpu thread`
 
-Disk Space (docker dir) >= 10GB   
-CPU >= 4  
-Memory >= 2GB 
+* Disk Space (docker dir) >= 10GB   
+* CPU >= 4  
+* Memory >= 2GB 
                                                                       
 ##### Prerequisites                                                             
 * clone geth-cluster repo
@@ -42,9 +42,16 @@ After the DAG was built miner nodes are starting mine. The DAG only needs once t
 docker-compose up -d --scale geth-miner=${MinerCount} --no-recreate
 ```
 
-### Ethereum Accounts  
-Every miner (including exposed miner) has an already existing ethereum account. The account address is located in the file **/privatechain/accID** inside each miner container.
-The account will be generated when the miner containers are first started. The password is predefined in the file **geth-miner/passfile** in the geth-cluster git repository.
+### Ethereum
+
+##### Account Management
+
+Every miner, including exposed node, has already an existing ethereum account. The account address is located in the file **/privatechain/accID** inside each miner container or you can use geth console to get it.
+The account will be generated when the miner containers are first started. The password is predefined in the file **geth-miner/passfile**.
+
+##### Genesis Block
+
+Genesis block is predefined with a very low difficulty to mine. In generally it sould take about 10-20 seconds to mine the next block.
 
 ### Testing
 
@@ -63,7 +70,11 @@ docker build -t testing-1 testing
 docker run -it --network=geth-cluster_overlay --env-file envar.env testing-1
 ```
 
-### Deployment Smart Contract   
+### Deployment Smart Contract
+
+Deploy solidity smart contract with truffle. There are two example smart contracts in the folder  **truffle/sc**. 
+For deploying your own smart contract use truffle and your preferred IDE to write one and put it in a separate folder as mentioned before. <br> **Both example smart contract are ready to deploy on your ethereum network.** 
+
 ##### Build truffle deployment container
 ```sh
 docker build -t truffle-1 truffle
@@ -73,3 +84,8 @@ docker build -t truffle-1 truffle
 ```sh
 docker run -it -w /dapp/${WorkDirSmartContract} --network=geth-cluster_overlay truffle-1 migrate --network geth-chain
 ```
+```sh
+# example for deploying example smart contract called "Weather1"
+docker run -it -w /dapp/Weather1 --network=geth-cluster_overlay truffle-1 migrate --network geth-chain
+```
+
