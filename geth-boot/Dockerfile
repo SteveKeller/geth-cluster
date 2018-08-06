@@ -1,5 +1,5 @@
 # take geth image with alltools (bootstrap tool)
-FROM ethereum/client-go:alltools-v1.8.8
+FROM ethereum/client-go:alltools-v1.8.13
 
 # set timezone for  apline image
 RUN apk --no-cache add tzdata
