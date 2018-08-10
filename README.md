@@ -35,9 +35,9 @@ docker-compose up
 
 Ethereum Blockchain needs about 30 minutes for bootstrapping (depends on your cpu hardware), which means to build and run all containers. Building container is only required if they are not already build once.
 The ethereum network builds a DAG (directed acyclic graph) for the proof of work algorithm. The building process takes all available cpu cores from the docker host machine.
-After the DAG was built miner nodes are starting mine. The DAG only needs once to get created and as long as the geth containers are not destroyed.
+After the DAG was built miner nodes are starting to mine. The DAG is generated only once as long as the containers are not destroyed.
 
-### Scale Miners     
+##### Scale Miners     
 ```sh
 docker-compose up -d --scale geth-miner=${MinerCount} --no-recreate
 ```
@@ -73,7 +73,7 @@ docker run -it --network=geth-cluster_overlay --env-file envar.env testing-1
 ### Deployment Smart Contract
 
 Deploy solidity smart contract with truffle. There are two example smart contracts in the folder  **truffle/sc**. 
-For deploying your own smart contract use truffle and your preferred IDE to write one and put it in a separate folder as mentioned before. <br> **Both example smart contract are ready to deploy on your ethereum network.** 
+For developing your own smart contract use truffle and your preferred IDE and put it in a separate folder **truffle/your-smart-contract**. <br> **Both example smart contract are ready to deploy on your ethereum network.** 
 
 ##### Build truffle deployment container
 ```sh
@@ -86,6 +86,6 @@ docker run -it -w /dapp/${WorkDirSmartContract} --network=geth-cluster_overlay t
 ```
 ```sh
 # example for deploying example smart contract called "Weather1"
-docker run -it -w /dapp/Weather1 --network=geth-cluster_overlay truffle-1 migrate --network geth-chain
+docker run -it -w /dapp/your-smart-contract --network=geth-cluster_overlay truffle-1 migrate --network geth-chain
 ```
 
